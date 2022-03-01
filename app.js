@@ -1,7 +1,15 @@
 const  express = require("express");
+//1.7  npm install mongoose kolla diary.js
+const mongoose  =  require("mongoose");
+//1.8 npm install ejs
 //1.3 sätta dotenv i app.js
 const  dotenv = require("dotenv");
 dotenv.config();
+//1.9  vi lägger vår DiaryEntry  model
+const   {DiaryEntry} = require("./models/diary");
+
+
+
 /*1.4  i terminalen 
 git init .
 ls
@@ -16,9 +24,14 @@ const app = express()
 //1.2 npm install dotenv för att  öppna  server PORT=3000
 const PORT = process.env.PORT;
 
-app.get("/", (req, res)=>{
-    res.send("<h1>Hello wolrds</h1>");
-})
+//1.10 använd async await
+app.get("/", async (req, res)=>{
+    const entries =  await DiaryEntry.find();
+    res.render("index.ejs", {entries :  entries});
+});
+
+//1.11 mongoose.connect
+mongoose.connect("mongodb://localhost/backend1");
 
 app.listen(PORT, ()=>{
     console.log(`Started express server on port  ${PORT}`)
